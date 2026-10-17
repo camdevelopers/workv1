@@ -4,7 +4,8 @@ import { setSyncStatus, setPendingCount } from './ui.js';
 import { getUpcomingInstances, isMissed } from './instances.js';
 //import { getDB } from './db.js';
 
-import { renderTaskCard, getUpcomingInstances } from './instances.js';
+//import { renderTaskCard, getUpcomingInstances } from './instances.js';
+import { renderTaskCard } from './instances.js';
 import { renderTaskCard as renderCard } from './actions.js';
 
  
