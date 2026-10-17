@@ -1,4 +1,4 @@
-const REPO = 'YOUR_ORG/YOUR_REPO'; // ← change this
+const REPO = 'camdevelopers/work1'; // ← change this
 const API = `https://api.github.com/repos/${REPO}`;
 
 function authHeaders() {
