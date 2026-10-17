@@ -249,3 +249,6 @@ function renderUpcoming() {
 
 
 window.getDB = getDB;
+window.renderDashboard = renderDashboard;
+//window.saveDB = saveDB
+window.getDB = getDB;   
