@@ -155,51 +155,44 @@ export function isMissed(instance, task) {
 export function getUpcomingInstances(task, daysAhead = 7) {
   const db = getDB();
   const results = [];
+  let lastInstance = null;
+
+  // Get last instance from DB
+  const last = db.exec(`
+    SELECT instance_id, due_date, status, done_at
+    FROM instances WHERE task_id = '${task.task_id}'
+    ORDER BY due_date DESC LIMIT 1
+  `);
+  if (last.length > 0) {
+    const row = last[0];
+    const cols = row.columns;
+    lastInstance = Object.fromEntries(cols.map((c, i) => [c, row.values[0][i]]));
+  }
+
+  // Generate forward until we exceed daysAhead
   const horizon = new Date();
   horizon.setDate(horizon.getDate() + daysAhead);
-  const today = new Date().toISOString().slice(0, 10);
-
-  // 1. First: pull existing pending instances within horizon
-  const existing = db.exec(
-    `SELECT * FROM instances WHERE task_id = ? AND status != 'done' AND due_date <= ? AND due_date >= ?`,
-    [task.task_id, horizon.toISOString().slice(0, 10), today]
-  );
-  if (existing.length > 0) {
-    const cols = existing[0].columns;
-    results.push(...existing[0].values.map(v => Object.fromEntries(cols.map((c, i) => [c, v[i]]))));
-  }
-
-  // 2. Then: generate forward (for instances not yet in DB)
-  let lastInstance = null;
-  const last = db.exec(
-    `SELECT instance_id, due_date, status, done_at FROM instances WHERE task_id = ? ORDER BY due_date DESC LIMIT 1`,
-    [task.task_id]
-  );
-  if (last.length > 0 && last[0].values.length > 0) {
-    const cols = last[0].columns;
-    lastInstance = Object.fromEntries(cols.map((c, i) => [c, last[0].values[0][i]]));
-  }
 
   let current = lastInstance;
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) { // safety cap
     const inst = generateNextInstance(task, current);
     if (!inst) break;
     if (new Date(inst.due_date) > horizon) break;
-    if (new Date(inst.due_date) < new Date()) continue; // skip past dates
 
-    const existing2 = db.exec(`SELECT 1 FROM instances WHERE instance_id = ?`, [inst.instance_id]);
-    if (existing2.length === 0) {
-      db.run(`INSERT INTO instances (instance_id, task_id, due_date, status) VALUES (?,?,?, 'pending')`,
-        [inst.instance_id, task.task_id, inst.due_date]);
+    // Check if it already exists in DB
+    const existing = db.exec(`SELECT 1 FROM instances WHERE instance_id = '${inst.instance_id}'`);
+    if (existing.length === 0) {
+      db.run(
+        `INSERT INTO instances (instance_id, task_id, due_date, status) VALUES (?,?,?, 'pending')`,
+        [inst.instance_id, inst.task_id, inst.due_date]
+      );
     }
 
-    // Avoid duplicates
-    if (!results.find(r => r.instance_id === inst.instance_id)) {
-      const row = db.exec(`SELECT * FROM instances WHERE instance_id = ?`, [inst.instance_id]);
-      if (row.length > 0) {
-        const cols = row[0].columns;
-        results.push(Object.fromEntries(cols.map((c, i) => [c, row[0].values[0][i]])));
-      }
+    // Fetch the row (existing or just inserted)
+    const row = db.exec(`SELECT * FROM instances WHERE instance_id = '${inst.instance_id}'`);
+    if (row.length > 0) {
+      const cols = row[0].columns;
+      results.push(Object.fromEntries(cols.map((c, i) => [c, row[0].values[0][i]])));
     }
 
     current = inst;
