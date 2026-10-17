@@ -1,6 +1,11 @@
 import { initDB, getDB, saveDB, getUserIndex, setUserIndex, getLastSHA, setLastSHA, getPending, setPending, applyEventRow } from './db.js';
 import { getLatestSHA, listChanges, fetchFileContent, pushFile } from './git.js';
 import { setSyncStatus, setPendingCount } from './ui.js';
+import { getUpcomingInstances, isMissed } from './instances.js';
+import { getDB } from './db.js';
+
+
+
 
 let currentUser = null;
 let pollTimer = null;
@@ -192,5 +197,19 @@ function initNav() {
   } else {
     initLogin();
   }
-})();   
+})();
+
+
+function renderUpcoming() {
+  const db = getDB();
+  const tasks = db.exec(`SELECT * FROM tasks WHERE retired = 0`);
+  const cols = tasks[0].columns;
+  const taskObjs = tasks[0].values.map(v => Object.fromEntries(cols.map((c, i) => [c, v[i]])));
+
+  for (const task of taskObjs) {
+    const instances = getUpcomingInstances(task, 7);
+    const missed = instances.filter(i => isMissed(i, task));
+    // render missed + upcoming sections
+  }
+}
 window.getDB = getDB;
