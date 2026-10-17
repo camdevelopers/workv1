@@ -226,7 +226,7 @@ function renderUpcoming() {
 }
 
 
-function renderDashboard() {
+/*function renderDashboard() {
   const db = getDB();
   const tasksRes = db.exec(`SELECT * FROM tasks WHERE retired = 0`);
   if (tasksRes.length === 0) return;
@@ -244,7 +244,7 @@ function renderDashboard() {
       upcomingSection.appendChild(renderCard(inst, task));
     }
   }
-}  
+}*/  
 
 
 
