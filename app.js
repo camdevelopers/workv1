@@ -6,6 +6,7 @@ import { getUpcomingInstances, isMissed } from './instances.js';
 
 //import { renderTaskCard, getUpcomingInstances } from './instances.js';
 import { renderTaskCard as renderCard } from './actions.js';
+import { renderDashboard } from './dashboard.js';   
 
  
 
@@ -64,6 +65,8 @@ async function startApp() {
   await doPushPending();
   startPolling();
   initNav();
+  restorePrefs();
+  renderDashboard();   
 }
 
 // --- Pull: check for new commits, fetch new CSVs, apply ---
@@ -113,6 +116,7 @@ async function doPull() {
     if (applied > 0) await saveDB();
 
     setSyncStatus(`✅ Synced (${applied} new)`);
+    renderDashboard();   
   } catch (e) {
     setSyncStatus(`❌ ${e.message}`, 'error');
     console.error('Pull failed:', e);
@@ -173,6 +177,7 @@ export async function logAction(instance_id, task_id, action, note = '') {
 
   // Try to push immediately
   await doPushPending();
+    renderDashboard();
 }
 
 // --- Polling ---
