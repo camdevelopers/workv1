@@ -159,7 +159,6 @@ export async function setPending(items) {
 
 // --- Apply a CSV event row into DB ---
 export function applyEventRow(fields) {
-  // fields: [ts, instance_id, task_id, action, user, note]
   const [ts, instance_id, task_id, action, user, note] = fields;
 
   db.run(
@@ -167,13 +166,61 @@ export function applyEventRow(fields) {
     [ts, instance_id, task_id, action, user, note || null]
   );
 
-  // If action is 'done', update instance
+  // done → update instance
   if (action === 'done') {
     db.run(
       `INSERT INTO instances (instance_id, task_id, due_date, status, done_by, done_at, note)
        VALUES (?,?,?, 'done', ?, ?, ?)
        ON CONFLICT(instance_id) DO UPDATE SET status='done', done_by=excluded.done_by, done_at=excluded.done_at, note=excluded.note`,
       [instance_id, task_id, ts.slice(0, 10), user, ts, note || null]
+    );
+  }
+
+  // note → insert into notes table
+  if (action === 'note') {
+    db.run(
+      `INSERT OR IGNORE INTO notes (note_id, author, ts, content) VALUES (?,?,?,?)`,
+      [instance_id, user, ts, note || '']
+    );
+  }
+
+  // checkin → insert into attendance
+  if (action === 'checkin') {
+    db.run(
+      `INSERT OR IGNORE INTO attendance (date, user, checkin, checkout) VALUES (?,?,?,NULL)`,
+      [ts.slice(0, 10), user, ts.slice(11, 19)]
+    );
+  }
+
+  // checkout → update attendance
+  if (action === 'checkout') {
+    db.run(
+      `UPDATE attendance SET checkout = ? WHERE date = ? AND user = ?`,
+      [ts.slice(11, 19), ts.slice(0, 10), user]
+    );
+  }
+
+  // unavailable → insert into leave
+  if (action === 'unavailable') {
+    // note format: "type:leave 2026-10-20→2026-10-24 reason"
+    const parts = (note || '').split(' ');
+    const type = (parts[0] || 'leave').replace('type:', '');
+    const dates = (parts[1] || '').split('→');
+    const start = dates[0] || ts.slice(0, 10);
+    const end = dates[1] && dates[1] !== 'open' ? dates[1] : null;
+    const reason = parts.slice(2).join(' ') || null;
+
+    db.run(
+      `INSERT OR IGNORE INTO leave (user, start_date, end_date, type, reason) VALUES (?,?,?,?,?)`,
+      [user, start, end, type, reason]
+    );
+  }
+
+  // available → remove from leave
+  if (action === 'available') {
+    db.run(
+      `DELETE FROM leave WHERE user = ? AND start_date = ?`,
+      [user, ts.slice(0, 10)]
     );
   }
 }   
