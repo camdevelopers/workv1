@@ -8,3 +8,52 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 nav { display: flex; gap: 0.5rem; margin-top: 1rem; }
 nav button { padding: 0.4rem 0.8rem; cursor: pointer; }
 .page { margin-top: 1rem; }   
+
+
+
+
+
+.task-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+}
+.task-card-header { margin-bottom: 0.25rem; }
+.task-card-due { font-size: 0.85rem; color: #6b7280; margin-bottom: 0.4rem; }
+.task-actions { display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap; }
+.task-actions button {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  background: #fff;
+}
+.task-actions button:hover { background: #f3f4f6; }
+.task-actions button.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.task-actions button:disabled { opacity: 0.4; cursor: default; }
+.transfer-btn { border-color: #f59e0b !important; }
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+.badge-pending { background: #f3f4f6; color: #6b7280; }
+.badge-will_do { background: #fef3c7; color: #92400e; }
+.badge-doing { background: #dbeafe; color: #1e40af; }
+.badge-done { background: #d1fae5; color: #065f46; }
+.badge-transferred { background: #fce7f3; color: #9d174d; }
+
+.timeline { margin-top: 1rem; }
+.timeline-row { padding: 0.3rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.85rem; }
+.tl-time { color: #6b7280; margin-right: 0.5rem; }
+.tl-action { font-weight: 600; }
+.tl-user { color: #2563eb; margin-left: 0.3rem; }
+.tl-note { color: #6b7280; font-style: italic; margin-left: 0.5rem; }
+
+.doer { color: #059669; font-size: 0.85rem; }   
