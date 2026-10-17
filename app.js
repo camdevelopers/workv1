@@ -193,4 +193,4 @@ function initNav() {
     initLogin();
   }
 })();   
-window.db = getDB();
+window.db = getDB;
