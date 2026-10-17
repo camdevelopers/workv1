@@ -2,7 +2,7 @@ import { initDB, getDB, saveDB, getUserIndex, setUserIndex, getLastSHA, setLastS
 import { getLatestSHA, listChanges, fetchFileContent, pushFile } from './git.js';
 import { setSyncStatus, setPendingCount } from './ui.js';
 import { getUpcomingInstances, isMissed } from './instances.js';
-import { getDB } from './db.js';
+//import { getDB } from './db.js';
 
 
 
