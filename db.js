@@ -44,7 +44,9 @@ async function idbSet(key, value) {
 
 // --- DB init ---
 export async function initDB() {
-  SQL = await initSqlJs();
+  SQL = await initSqlJs({
+  locateFile: () => 'https://sql.js.org/dist/sql-wasm.wasm'
+});
 
   const savedBlob = await idbGet(DB_KEY);
   if (savedBlob) {
