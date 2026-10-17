@@ -212,4 +212,4 @@ function renderUpcoming() {
     // render missed + upcoming sections
   }
 }
-//window.getDB = getDB;
+window.getDB = getDB;
