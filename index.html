@@ -26,10 +26,81 @@
   </header>
 
   <!-- Pages (toggled by router) -->
-  <div id="page-dashboard" class="page">
-    <h3>Dashboard</h3>
-    <p>Phase 2 content goes here.</p>
-  </div>
+<div id="page-dashboard" class="page">
+  <!-- Section 1: Attendance (current user) -->
+  <section id="sec-attendance" class="sec open">
+    <header class="sec-header" onclick="toggleSec(this)">
+      <span>🕐 My Attendance</span><span class="chevron">▾</span>
+    </header>
+    <div class="sec-body">
+      <div id="attendance-content"></div>
+    </div>
+  </section>
+
+  <!-- Section 2: Office Presence -->
+  <section id="sec-presence" class="sec open">
+    <header class="sec-header" onclick="toggleSec(this)">
+      <span>👥 Office Presence</span><span class="chevron">▾</span>
+    </header>
+    <div class="sec-body">
+      <div id="presence-content"></div>
+    </div>
+  </section>
+
+  <!-- Section 3: Missed Tasks -->
+  <section id="sec-missed" class="sec open">
+    <header class="sec-header" onclick="toggleSec(this)">
+      <span>⚠️ Missed Tasks</span><span class="chevron">▾</span>
+    </header>
+    <div class="sec-body">
+      <div id="missed-content"></div>
+    </div>
+  </section>
+
+  <!-- Section 4: Upcoming (today + 7d) -->
+  <section id="sec-upcoming" class="sec open">
+    <header class="sec-header" onclick="toggleSec(this)">
+      <span>📅 Upcoming</span><span class="chevron">▾</span>
+    </header>
+    <div class="sec-body">
+      <div id="upcoming-content"></div>
+    </div>
+  </section>
+
+  <!-- Section 5: Recurring (beyond 7d) -->
+  <section id="sec-recurring" class="sec">
+    <header class="sec-header" onclick="toggleSec(this)">
+      <span>🔄 Recurring</span><span class="chevron">▸</span>
+    </header>
+    <div class="sec-body" style="display:none">
+      <div id="recurring-content"></div>
+    </div>
+  </section>
+
+  <!-- Section 6: Notes -->
+  <section id="sec-notes" class="sec">
+    <header class="sec-header" onclick="toggleSec(this)">
+      <span>📝 Notes</span><span class="chevron">▸</span>
+    </header>
+    <div class="sec-body" style="display:none">
+      <div id="notes-content"></div>
+      <div class="note-publish">
+        <input id="note-input" placeholder="Write a note…" />
+        <button onclick="publishNote()">Post</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Paused / Retired -->
+  <section id="sec-paused" class="sec">
+    <header class="sec-header" onclick="toggleSec(this)">
+      <span>⏸ Paused / Retired</span><span class="chevron">▸</span>
+    </header>
+    <div class="sec-body" style="display:none">
+      <div id="paused-content"></div>
+    </div>
+  </section>
+</div>   
   <div id="page-task-create" class="page" style="display:none">
     <h3>Task Creation</h3>
   </div>
