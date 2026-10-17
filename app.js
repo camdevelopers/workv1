@@ -65,7 +65,7 @@ async function startApp() {
   await doPushPending();
   startPolling();
   initNav();
-  restorePrefs();
+ // restorePrefs();   TODO
   renderDashboard();   
 }
 
