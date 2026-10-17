@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office PWA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <h2>Sign In</h2>
+  <input id="login-user" placeholder="Username" />
+  <input id="login-token" type="password" placeholder="GitHub PAT" />
+  <button id="login-btn">Sign In</button>
+  <p id="login-error"></p>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+  <header>
+    <span id="sync-status">⏳ Syncing…</span>
+    <button id="refresh-btn">⟳</button>
+    <span id="user-label"></span>
+  </header>
+
+  <!-- Pages (toggled by router) -->
+  <div id="page-dashboard" class="page">
+    <h3>Dashboard</h3>
+    <p>Phase 2 content goes here.</p>
+  </div>
+  <div id="page-task-create" class="page" style="display:none">
+    <h3>Task Creation</h3>
+  </div>
+  <div id="page-task-detail" class="page" style="display:none">
+    <h3>Task Detail</h3>
+  </div>
+  <div id="page-maintenance" class="page" style="display:none">
+    <h3>Maintenance</h3>
+  </div>
+
+  <!-- Nav -->
+  <nav>
+    <button data-page="dashboard">Dashboard</button>
+    <button data-page="task-create">New Task</button>
+    <button data-page="maintenance">Admin</button>
+  </nav>
+</div>
+
+<script src="https://sql.js.org/dist/sql-wasm.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>   
