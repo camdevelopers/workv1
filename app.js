@@ -4,6 +4,13 @@ import { setSyncStatus, setPendingCount } from './ui.js';
 import { getUpcomingInstances, isMissed } from './instances.js';
 //import { getDB } from './db.js';
 
+import { renderTaskCard, getUpcomingInstances } from './instances.js';
+import { renderTaskCard as renderCard } from './actions.js';
+
+ 
+
+
+
 
 
 
@@ -212,4 +219,28 @@ function renderUpcoming() {
     // render missed + upcoming sections
   }
 }
+
+
+function renderDashboard() {
+  const db = getDB();
+  const tasksRes = db.exec(`SELECT * FROM tasks WHERE retired = 0`);
+  if (tasksRes.length === 0) return;
+
+  const cols = tasksRes[0].columns;
+  const tasks = tasksRes[0].values.map(v => Object.fromEntries(cols.map((c, i) => [c, v[i]])));
+
+  // Upcoming section (today + 7d)
+  const upcomingSection = document.getElementById('section-upcoming');
+  upcomingSection.innerHTML = '';
+
+  for (const task of tasks) {
+    const instances = getUpcomingInstances(task, 7);
+    for (const inst of instances) {
+      upcomingSection.appendChild(renderCard(inst, task));
+    }
+  }
+}  
+
+
+
 window.getDB = getDB;
