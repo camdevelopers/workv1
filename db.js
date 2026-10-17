@@ -1,5 +1,6 @@
-import initSqlJs from 'https://sql.js.org/dist/sql-wasm.js';
-
+//import initSqlJs from 'https://sql.js.org/dist/sql-wasm.js';
+export async function initDB() {
+  SQL = await initSqlJs();
 const IDB_NAME = 'office-pwa';
 const IDB_STORE = 'state';
 const DB_KEY = 'sqlite_blob';
@@ -175,3 +176,4 @@ export function applyEventRow(fields) {
     );
   }
 }   
+}
