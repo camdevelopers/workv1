@@ -2,6 +2,7 @@ import { initDB, getDB, saveDB, getUserIndex, setUserIndex, getLastSHA, setLastS
 import { getLatestSHA, listChanges, fetchFileContent, pushFile } from './git.js';
 import { setSyncStatus, setPendingCount } from './ui.js';
 import { getUpcomingInstances, isMissed } from './instances.js';
+import { getLatestSHA, listChanges, fetchFileContent, pushFile, listDir } from './git.js';   
 //import { getDB } from './db.js';
 
 //import { renderTaskCard, getUpcomingInstances } from './instances.js';
@@ -12,7 +13,9 @@ import { initTaskCreatePage } from './task-create.js';
 import { showLeaveModal } from './leave.js';
 
  
-
+window.getDB = getDB;
+window.renderDashboard = renderDashboard;
+window.saveDB = saveDB;
 
 
 
@@ -24,7 +27,7 @@ let pollTimer = null;
 // --- Router ---
 const pages = ['dashboard', 'task-create', 'task-detail', 'maintenance'];
 
-function showPage(name) {
+export function showPage(name) {
   pages.forEach(p => {
     document.getElementById(`page-${p}`).style.display = p === name ? '' : 'none';
   });
@@ -68,6 +71,11 @@ async function startApp() {
   await doPushPending();
   startPolling();
   initNav();
+ document.getElementById('signout-btn').addEventListener('click', () => {
+  localStorage.removeItem('fe_token');
+  localStorage.removeItem('fe_user');
+  location.reload();
+});   
   initTaskCreatePage();
  // restorePrefs();   TODO
   renderDashboard();
@@ -258,7 +266,5 @@ function renderUpcoming() {
 } */  
 
 
-window.getDB = getDB;
-window.renderDashboard = renderDashboard;
-window.saveDB = saveDB
+
 //window.getDB = getDB;   
