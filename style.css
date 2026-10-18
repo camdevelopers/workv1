@@ -242,3 +242,21 @@ nav button { padding: 0.4rem 0.8rem; cursor: pointer; }
 /* Completed / missed card styling */
 .card-missed { border-left: 3px solid #dc2626; }
 .card-completed { border-left: 3px solid #059669; opacity: 0.8; }   
+
+
+
+
+
+
+
+
+
+
+
+.card-inactive {
+  opacity: 0.55;
+  border-color: #e5e7eb;
+}
+.card-inactive .task-card-header strong {
+  color: #9ca3af;
+}   
