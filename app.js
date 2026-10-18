@@ -94,25 +94,25 @@ async function doPull() {
       return;
     }
 
-    // New commits exist — fetch new files
-    const files = await listChanges();
-    const index = await getUserIndex();
+    const db = getDB();
     let applied = 0;
 
+    // --- Pull changes/ (event CSVs) ---
+    const files = await listChanges();
+    const index = await getUserIndex();
+
     for (const filename of files) {
-      // Parse: {user}_{seq}.csv
       const match = filename.match(/^(.+)_(\d+)\.csv$/);
       if (!match) continue;
       const [, fileUser, seqStr] = match;
       const seq = parseInt(seqStr, 10);
       const lastSeen = index[fileUser] || 0;
 
-      if (seq <= lastSeen) continue; // already processed
+      if (seq <= lastSeen) continue;
 
       const content = await fetchFileContent(`changes/${filename}`);
       const lines = content.trim().split('\n');
 
-      // First line is header, rest are data
       for (let i = 1; i < lines.length; i++) {
         const fields = lines[i].split('|');
         if (fields.length >= 6) {
@@ -125,16 +125,40 @@ async function doPull() {
     }
 
     await setUserIndex(index);
+
+    // --- Pull tasks/ (task definitions) ---
+    const taskFiles = await listDir('tasks');
+    for (const filename of taskFiles) {
+      if (!filename.endsWith('.csv')) continue;
+      const taskId = filename.replace('.csv', '');
+      const exists = db.exec(`SELECT 1 FROM tasks WHERE task_id = ?`, [taskId]);
+      if (exists.length > 0) continue;
+
+      const content = await fetchFileContent(`tasks/${filename}`);
+      const lines = content.trim().split('\n');
+      const header = lines[0].split('|');
+      const values = lines[1].split('|');
+      const obj = Object.fromEntries(header.map((h, i) => [h, values[i]]));
+
+      db.run(
+        `INSERT OR IGNORE INTO tasks (task_id, name, type, recurrence, assigned_user, exempt_days, grace_min, show_all_instances, track_time, retired, created_at)
+         VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+        [obj.task_id, obj.name, obj.type, obj.recurrence, obj.assigned_user || '', obj.exempt_days || '', parseInt(obj.grace_min) || 0, parseInt(obj.show_all_instances) || 1, parseInt(obj.track_time) || 0, 0, new Date().toISOString()]
+      );
+      applied++;
+    }
+
+    // --- Save & update ---
     await setLastSHA(remoteSHA);
     if (applied > 0) await saveDB();
 
     setSyncStatus(`✅ Synced (${applied} new)`);
-    renderDashboard();   
+    renderDashboard();
   } catch (e) {
     setSyncStatus(`❌ ${e.message}`, 'error');
     console.error('Pull failed:', e);
   }
-}
+}   
 
 // --- Push: send pending local changes ---
 async function doPushPending() {
