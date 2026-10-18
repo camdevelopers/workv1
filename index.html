@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Office PWA</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="expenses.css">   
 </head>
 <body>
 
@@ -214,6 +215,103 @@
     <div id="maintenance-content"></div>
   </div>
 
+
+
+
+<!-- INTEGRARTING INDEX.HTML   OF OFFICE EXPENSES  -->
+  <div id="page-expenses" class="page" style="display:none">
+  <div id="exp-offlineBanner">📡 Offline — <span id="exp-pendingCount">0</span> changes queued</div>
+
+  <h1>📊 Office Expenses</h1>
+  <div class="exp-user-bar">
+    <span id="exp-userLabel"></span>
+    <select id="exp-monthSelect" onchange="expSwitchMonth(this.value)"></select>
+  </div>
+
+  <div style="overflow-x:auto;">
+    <table class="exp-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Date</th><th>Type</th><th>Detail</th><th>Amount</th>
+          <th>Value</th><th>Balance</th><th>Receipt</th><th>File</th><th>Remarks</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="exp-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="exp-balance-total" id="exp-balanceTotal"></div>
+
+  <div class="exp-form">
+    <h2 id="exp-formTitle">Add Entry</h2>
+    <div class="exp-form-row">
+      <div>
+        <label>Type</label>
+        <select id="exp-fType">
+          <option value="EXPENSE">Expense</option>
+          <option value="EMPLOYEE PAID">Employee Expense</option>
+          <option value="PETTY CASH RECEIVED">Petty Cash Received</option>
+          <option value="REIMBURSED">Reimbursed</option>
+          <option value="PAID BY SIR">Paid by Sir</option>
+          <option value="PAID BY MAM">Paid by Mam</option>
+        </select>
+      </div>
+      <div>
+        <label>Amount (₹)</label>
+        <input type="number" id="exp-fAmount" min="0" step="0.01" placeholder="0.00">
+      </div>
+    </div>
+    <div class="exp-form-row">
+      <div>
+        <label>Date</label>
+        <input type="date" id="exp-fDate">
+      </div>
+      <div>
+        <label>Receipt</label>
+        <select id="exp-fReceipt">
+          <option value="YES" selected>YES</option>
+          <option value="NO">NO</option>
+          <option value="CARBON">CARBON</option>
+          <option value="VOUCHER">VOUCHER</option>
+          <option value="AMAZON">AMAZON</option>
+          <option value="BLINKIT">BLINKIT</option>
+          <option value="ZEPTO">ZEPTO</option>
+          <option value="RAPIDO">RAPIDO</option>
+          <option value="ZOMATO">ZOMATO</option>
+          <option value="UBER">UBER</option>
+          <option value="BIGBASKET">BIGBASKET</option>
+          <option value="PAPER">PAPER</option>
+          <option value="OTHER">OTHER</option>
+        </select>
+      </div>
+    </div>
+    <div class="exp-form-row full">
+      <div>
+        <label>Detail</label>
+        <input type="text" id="exp-fDetail" placeholder="e.g. Groceries, Fuel, Salary…">
+      </div>
+    </div>
+    <div class="exp-form-row full">
+      <div>
+        <label>Remarks</label>
+        <input type="text" id="exp-fRemarks" placeholder="Optional notes…">
+      </div>
+    </div>
+    <div class="exp-form-row full" id="exp-fileRow">
+      <div>
+        <label>File (photo / document)</label>
+        <input type="file" id="exp-fFile" accept="image/*,.pdf" capture="environment" style="font-size:0.8rem;">
+      </div>
+    </div>
+    <button class="exp-btn-add" id="exp-btnSubmit" onclick="expAddRow()">+ Add Row</button>
+    <button class="exp-btn-cancel" id="exp-btnCancel" onclick="expCancelEdit()" style="display:none;">✕ Cancel Edit</button>
+  </div>
+</div>   
+
+
+
+
+  
   <!-- NAV -->
   <nav>
     <button data-page="dashboard">Dashboard</button>
