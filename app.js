@@ -12,6 +12,7 @@ import { renderDashboard } from './dashboard.js';
 
 import { initTaskCreatePage } from './task-create.js';
 import { showLeaveModal } from './leave.js';
+import { initExpensesPage } from './expenses.js';
 
  
 window.getDB = getDB;
@@ -33,6 +34,7 @@ export function showPage(name) {
     document.getElementById(`page-${p}`).style.display = p === name ? '' : 'none';
   });
   history.pushState(name, '');
+  if (name === 'expenses') initExpensesPage();
 }
 
 // --- Login ---
