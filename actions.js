@@ -138,18 +138,20 @@ export function renderTaskCard(instance, task) {
   card.className = 'task-card';
 
 
+    // Header: name + assigned + doer
+  const doer = getDoer(instance.instance_id);
+  const assigned = task.assigned_user;
+  const doerLabel = doer && doer !== assigned
+    ? `<span class="doer">→ ${doer}</span>`
+    : '';
+
+
     const header = document.createElement('div');
   header.className = 'task-card-header';
   header.innerHTML = `<strong>${task.name}</strong> <span class="muted">(${assigned})</span> ${doerLabel}`;
   card.appendChild(header);
 
   
-  // Header: name + assigned + doer
-  const doer = getDoer(instance.instance_id);
-  const assigned = task.assigned_user;
-  const doerLabel = doer && doer !== assigned
-    ? `<span class="doer">→ ${doer}</span>`
-    : '';
 
 
   // After the doer label, add transfer label
