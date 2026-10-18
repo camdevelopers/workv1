@@ -142,3 +142,27 @@ nav button { padding: 0.4rem 0.8rem; cursor: pointer; }
   background: #f59e0b; color: #fff; border: none; border-radius: 4px;
   cursor: pointer; font-size: 0.85rem;
 }   
+
+
+
+
+
+
+/* Signout */
+.btn-signout {
+  padding: 0.3rem 0.7rem; font-size: 0.8rem;
+  background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5;
+  border-radius: 4px; cursor: pointer;
+}
+.btn-signout:hover { background: #fecaca; }
+
+/* Transfer select */
+.transfer-select {
+  padding: 0.25rem 0.5rem; font-size: 0.8rem;
+  border: 1px solid #f59e0b; border-radius: 4px;
+  background: #fffbeb; cursor: pointer;
+}
+.transfer-select:focus { outline: 2px solid #f59e0b; }
+
+/* Transfer label on card */
+.transfer-label { color: #9d174d; font-size: 0.85rem; margin-left: 0.4rem; font-weight: 600; }   
