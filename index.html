@@ -19,198 +19,205 @@
 
 <!-- APP -->
 <div id="app" style="display:none">
-<header>
-  <span id="sync-status">⏳ Syncing…</span>
-  <button id="refresh-btn">⟳</button>
-  <span id="user-label"></span>
-  <button id="signout-btn" class="btn-signout">Sign Out</button>
-</header>   
-
-  <!-- Pages (toggled by router) -->
-<div id="page-dashboard" class="page">
-  <!-- Section 1: Attendance (current user) -->
-  <section id="sec-attendance" class="sec open">
-    <header class="sec-header" onclick="toggleSec(this)">
-      <span>🕐 My Attendance</span><span class="chevron">▾</span>
-    </header>
-    <div class="sec-body">
-      <div id="attendance-content"></div>
-    </div>
-  </section>
-
-  <!-- Section 2: Office Presence -->
-  <section id="sec-presence" class="sec open">
-    <header class="sec-header" onclick="toggleSec(this)">
-      <span>👥 Office Presence</span><span class="chevron">▾</span>
-    </header>
-    <div class="sec-body">
-      <div id="presence-content"></div>
-       <button class="btn-leave" onclick="showLeaveModal()">Request Leave</button>
-    </div>
-  </section>
-
-  <!-- Section 3: Missed Tasks -->
-  <section id="sec-missed" class="sec open">
-    <header class="sec-header" onclick="toggleSec(this)">
-      <span>⚠️ Missed Tasks</span><span class="chevron">▾</span>
-    </header>
-    <div class="sec-body">
-      <div id="missed-content"></div>
-    </div>
-  </section>
-
-  <!-- Section 4: Upcoming (today + 7d) -->
-  <section id="sec-upcoming" class="sec open">
-    <header class="sec-header" onclick="toggleSec(this)">
-      <span>📋 Current Tasks</span><span class="chevron">▾</span>
-    </header>
-    <div class="sec-body">
-      <div id="upcoming-content"></div>
-    </div>
-  </section>
-
-<!-- Section 5: Completed -->
-<section id="sec-completed" class="sec">
-  <header class="sec-header" onclick="toggleSec(this)">
-    <span>✅ Completed</span><span class="chevron">▸</span>
+  <header>
+    <span id="sync-status">⏳ Syncing…</span>
+    <button id="refresh-btn">⟳</button>
+    <span id="user-label"></span>
+    <button id="signout-btn" class="btn-signout">Sign Out</button>
   </header>
-  <div class="sec-body" style="display:none">
-    <div id="completed-content"></div>
-  </div>
-</section>   
 
-  
-  <!-- Section 5: Recurring (beyond 7d) -->
-  <section id="sec-recurring" class="sec">
-    <header class="sec-header" onclick="toggleSec(this)">
-      <span>🔄 Recurring</span><span class="chevron">▸</span>
-    </header>
-    <div class="sec-body" style="display:none">
-      <div id="recurring-content"></div>
-    </div>
-  </section>
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page">
 
-  <!-- Section 6: Notes -->
-  <section id="sec-notes" class="sec">
-    <header class="sec-header" onclick="toggleSec(this)">
-      <span>📝 Notes</span><span class="chevron">▸</span>
-    </header>
-    <div class="sec-body" style="display:none">
-      <div id="notes-content"></div>
-      <div class="note-publish">
-        <input id="note-input" placeholder="Write a note…" />
-        <button onclick="publishNote()">Post</button>
+    <!-- Section 1: Attendance -->
+    <section id="sec-attendance" class="sec open">
+      <header class="sec-header" onclick="toggleSec(this)">
+        <span>🕐 My Attendance</span><span class="chevron">▾</span>
+      </header>
+      <div class="sec-body">
+        <div id="attendance-content"></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Section 7: Paused / Retired -->
-  <section id="sec-paused" class="sec">
-    <header class="sec-header" onclick="toggleSec(this)">
-      <span>⏸ Paused / Retired</span><span class="chevron">▸</span>
-    </header>
-    <div class="sec-body" style="display:none">
-      <div id="paused-content"></div>
-    </div>
-  </section>
-</div>   
-<div id="page-task-create" class="page" style="display:none">
-  <h3>Tasks</h3>
+    <!-- Section 2: Office Presence -->
+    <section id="sec-presence" class="sec open">
+      <header class="sec-header" onclick="toggleSec(this)">
+        <span>👥 Office Presence</span><span class="chevron">▾</span>
+      </header>
+      <div class="sec-body">
+        <div id="presence-content"></div>
+        <button class="btn-leave" onclick="showLeaveModal()">Request Leave</button>
+      </div>
+    </section>
 
-  <!-- Task List -->
-  <div id="task-list" class="task-list"></div>
+    <!-- Section 3: Missed Tasks -->
+    <section id="sec-missed" class="sec open">
+      <header class="sec-header" onclick="toggleSec(this)">
+        <span>⚠️ Missed Tasks</span><span class="chevron">▾</span>
+      </header>
+      <div class="sec-body">
+        <div id="missed-content"></div>
+      </div>
+    </section>
 
-  <!-- Create Form -->
-  <h4 style="margin-top:1.5rem">Create New Task</h4>
-  <form id="task-form">
-    <label>Name</label>
-    <input id="tc-name" required placeholder="e.g. Water garden" />
+    <!-- Section 4: Current Tasks -->
+    <section id="sec-current" class="sec open">
+      <header class="sec-header" onclick="toggleSec(this)">
+        <span>📋 Current Tasks</span><span class="chevron">▾</span>
+      </header>
+      <div class="sec-body">
+        <div id="current-content"></div>
+      </div>
+    </section>
 
-    <label>Type</label>
-    <select id="tc-type" required>
-      <option value="calendar">Calendar-anchored (fixed schedule)</option>
-      <option value="sequence">Sequence-based (every N days from last done)</option>
-      <option value="stock">Stock-threshold (due when stock runs low)</option>
-      <option value="standalone">Standalone (one-off)</option>
-    </select>
+    <!-- Section 5: Completed -->
+    <section id="sec-completed" class="sec">
+      <header class="sec-header" onclick="toggleSec(this)">
+        <span>✅ Completed</span><span class="chevron">▸</span>
+      </header>
+      <div class="sec-body" style="display:none">
+        <div id="completed-content"></div>
+      </div>
+    </section>
 
-    <!-- Calendar sub-fields -->
-    <div id="tc-cal-group" class="type-group">
-      <label>Frequency</label>
-      <select id="tc-cal-freq">
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly (specific days)</option>
-        <option value="monthly">Monthly (specific day)</option>
-        <option value="quarterly">Quarterly</option>
-        <option value="annual">Annual</option>
+    <!-- Section 6: Recurring (beyond 7d) -->
+    <section id="sec-recurring" class="sec">
+      <header class="sec-header" onclick="toggleSec(this)">
+        <span>🔄 Recurring</span><span class="chevron">▸</span>
+      </header>
+      <div class="sec-body" style="display:none">
+        <div id="recurring-content"></div>
+      </div>
+    </section>
+
+    <!-- Section 7: Notes -->
+    <section id="sec-notes" class="sec">
+      <header class="sec-header" onclick="toggleSec(this)">
+        <span>📝 Notes</span><span class="chevron">▸</span>
+      </header>
+      <div class="sec-body" style="display:none">
+        <div id="notes-content"></div>
+        <div class="note-publish">
+          <input id="note-input" placeholder="Write a note…" />
+          <button onclick="publishNote()">Post</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: Paused / Retired -->
+    <section id="sec-paused" class="sec">
+      <header class="sec-header" onclick="toggleSec(this)">
+        <span>⏸ Paused / Retired</span><span class="chevron">▸</span>
+      </header>
+      <div class="sec-body" style="display:none">
+        <div id="paused-content"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- TASK CREATION / MANAGEMENT -->
+  <div id="page-task-create" class="page" style="display:none">
+    <h3>Tasks</h3>
+
+    <div id="task-list" class="task-list"></div>
+
+    <h4 style="margin-top:1.5rem">Create New Task</h4>
+    <form id="task-form">
+      <label>Name</label>
+      <input id="tc-name" required placeholder="e.g. Water garden" />
+
+      <label>Type</label>
+      <select id="tc-type" required>
+        <option value="calendar">Calendar-anchored (fixed schedule)</option>
+        <option value="sequence">Sequence-based (every N days from last done)</option>
+        <option value="stock">Stock-threshold (due when stock runs low)</option>
+        <option value="standalone">Standalone (one-off)</option>
       </select>
 
-      <div id="tc-cal-days-group" class="sub-group">
-        <label>On which days?</label>
-        <div class="day-checks">
-          <label class="chk"><input type="checkbox" id="tc-day-mon" checked /> Mon</label>
-          <label class="chk"><input type="checkbox" id="tc-day-tue" checked /> Tue</label>
-          <label class="chk"><input type="checkbox" id="tc-day-wed" checked /> Wed</label>
-          <label class="chk"><input type="checkbox" id="tc-day-thu" checked /> Thu</label>
-          <label class="chk"><input type="checkbox" id="tc-day-fri" checked /> Fri</label>
-          <label class="chk"><input type="checkbox" id="tc-day-sat" /> Sat</label>
-          <label class="chk"><input type="checkbox" id="tc-day-sun" /> Sun</label>
+      <!-- Calendar sub-fields -->
+      <div id="tc-cal-group" class="type-group">
+        <label>Frequency</label>
+        <select id="tc-cal-freq">
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly (specific days)</option>
+          <option value="monthly">Monthly (specific day)</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="annual">Annual</option>
+        </select>
+
+        <div id="tc-cal-days-group" class="sub-group" style="display:none">
+          <label>On which days?</label>
+          <div class="day-checks">
+            <label class="chk"><input type="checkbox" id="tc-day-mon" checked /> Mon</label>
+            <label class="chk"><input type="checkbox" id="tc-day-tue" checked /> Tue</label>
+            <label class="chk"><input type="checkbox" id="tc-day-wed" checked /> Wed</label>
+            <label class="chk"><input type="checkbox" id="tc-day-thu" checked /> Thu</label>
+            <label class="chk"><input type="checkbox" id="tc-day-fri" checked /> Fri</label>
+            <label class="chk"><input type="checkbox" id="tc-day-sat" /> Sat</label>
+            <label class="chk"><input type="checkbox" id="tc-day-sun" /> Sun</label>
+          </div>
+        </div>
+
+        <div id="tc-cal-day-group" class="sub-group" style="display:none">
+          <label>On which day of month?</label>
+          <input id="tc-cal-day" type="number" min="1" max="31" value="1" />
         </div>
       </div>
 
-      <div id="tc-cal-day-group" class="sub-group">
-        <label>On which day of month?</label>
-        <input id="tc-cal-day" type="number" min="1" max="31" value="1" placeholder="1" />
+      <!-- Sequence sub-fields -->
+      <div id="tc-seq-group" class="type-group" style="display:none">
+        <label>Every ___ days (from last completion)</label>
+        <input id="tc-seq-days" type="number" min="1" value="2" />
       </div>
-    </div>
 
-    <!-- Sequence sub-fields -->
-    <div id="tc-seq-group" class="type-group" style="display:none">
-      <label>Every ___ days (from last completion)</label>
-      <input id="tc-seq-days" type="number" min="1" value="2" />
-    </div>
+      <!-- Stock sub-fields -->
+      <div id="tc-stock-group" class="type-group" style="display:none">
+        <label>Due when stock ≤ ___</label>
+        <input id="tc-stock-threshold" type="number" min="0" value="5" />
+        <label>Initial stock</label>
+        <input id="tc-stock-initial" type="number" min="0" value="0" />
+      </div>
 
-    <!-- Stock sub-fields -->
-    <div id="tc-stock-group" class="type-group" style="display:none">
-      <label>Due when stock ≤ ___</label>
-      <input id="tc-stock-threshold" type="number" min="0" value="5" />
-      <label>Initial stock</label>
-      <input id="tc-stock-initial" type="number" min="0" value="0" />
-    </div>
+      <!-- Standalone sub-fields -->
+      <div id="tc-standalone-group" class="type-group" style="display:none">
+        <label>Deadline (optional)</label>
+        <input id="tc-standalone-deadline" type="date" />
+      </div>
 
-    <!-- Standalone sub-fields -->
-    <div id="tc-standalone-group" class="type-group" style="display:none">
-      <label>Deadline (optional)</label>
-      <input id="tc-standalone-deadline" type="date" />
-    </div>
+      <label>Assigned to</label>
+      <select id="tc-assigned"></select>
 
-    <label>Assigned to</label>
-    <select id="tc-assigned"></select>
+      <label>Exempt days (comma-separated)</label>
+      <input id="tc-exempt" placeholder="sunday, holidays" />
 
-    <label>Exempt days (comma-separated)</label>
-    <input id="tc-exempt" placeholder="sunday, holidays" />
+      <label>Grace (minutes)</label>
+      <input id="tc-grace" type="number" min="0" value="0" />
 
-    <label>Grace (minutes)</label>
-    <input id="tc-grace" type="number" min="0" value="0" />
+      <label class="checkbox-label">
+        <input type="checkbox" id="tc-track-time" /> Track duration
+      </label>
 
-    <label class="checkbox-label">
-      <input type="checkbox" id="tc-track-time" /> Track duration
-    </label>
+      <button type="submit">Create Task</button>
+    </form>
+  </div>
 
-    <button type="submit">Create Task</button>
-  </form>
-</div>   
+  <!-- TASK DETAIL -->
   <div id="page-task-detail" class="page" style="display:none">
     <h3>Task Detail</h3>
-  </div>
-  <div id="page-maintenance" class="page" style="display:none">
-    <h3>Maintenance</h3>
+    <div id="task-detail-content"></div>
   </div>
 
-  <!-- Nav -->
+  <!-- MAINTENANCE -->
+  <div id="page-maintenance" class="page" style="display:none">
+    <h3>Maintenance</h3>
+    <div id="maintenance-content"></div>
+  </div>
+
+  <!-- NAV -->
   <nav>
     <button data-page="dashboard">Dashboard</button>
-    <button data-page="task-create">New Task</button>
+    <button data-page="task-create">Tasks</button>
     <button data-page="maintenance">Admin</button>
   </nav>
 </div>
