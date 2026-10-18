@@ -99,3 +99,25 @@ export function initTaskCreatePage() {
     showPage('dashboard');
   });
 }   
+
+
+
+
+//RETIRE FUNCTION
+export async function retireTask(taskId) {
+  const db = getDB();
+  db.run(`UPDATE tasks SET retired = 1 WHERE task_id = ?`, [taskId]);
+  await saveDB();
+
+  const { logAction } = await import('./app.js');
+  await logAction(taskId, taskId, 'retired', '');
+}
+
+export async function unretireTask(taskId) {
+  const db = getDB();
+  db.run(`UPDATE tasks SET retired = 0 WHERE task_id = ?`, [taskId]);
+  await saveDB();
+
+  const { logAction } = await import('./app.js');
+  await logAction(taskId, taskId, 'resumed', '');
+}   
