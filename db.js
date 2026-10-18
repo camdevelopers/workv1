@@ -227,4 +227,31 @@ export function applyEventRow(fields) {
       [user, ts.slice(0, 10)]
     );
   }
+
+  // created → insert task definition (from tasks/ directory pull)
+if (action === 'created') {
+  // note format: "name|type|recurrence|assigned|exempt|grace|showAll|trackTime"
+  const parts = (note || '').split('|');
+  const [name, type, recurrence, assigned, exempt, grace, showAll, trackTime] = parts;
+  db.run(
+    `INSERT OR IGNORE INTO tasks (task_id, name, type, recurrence, assigned_user, exempt_days, grace_min, show_all_instances, track_time, retired, created_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+    [task_id, name || task_id, type || 'standalone', recurrence || 'none', assigned || '', exempt || '', parseInt(grace) || 0, parseInt(showAll) || 1, parseInt(trackTime) || 0, 0, ts]
+  );
+}
+
+  if (action === 'consume' || action === 'restock') {
+  const qty = parseInt(note) || 0;
+  db.run(
+    `INSERT INTO stock (task_id, event, qty, ts, user) VALUES (?,?,?,?,?)`,
+    [task_id, action, qty, ts, user]
+  );
+}   
+
+  if (action === 'retired') {
+  db.run(`UPDATE tasks SET retired = 1 WHERE task_id = ?`, [task_id]);
+}
+if (action === 'resumed') {
+  db.run(`UPDATE tasks SET retired = 0 WHERE task_id = ?`, [task_id]);
+}   
 }   
