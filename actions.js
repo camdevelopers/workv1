@@ -31,21 +31,36 @@ export function renderActionButtons(instance, task) {
     container.appendChild(btn);
   }
 
-  // Transfer button (only if not done)
-  if (instance.status !== 'done') {
-    const tBtn = document.createElement('button');
-    tBtn.textContent = 'Transfer';
-    tBtn.className = 'transfer-btn';
-    tBtn.addEventListener('click', () => {
-      const target = prompt('Transfer to (username):');
-      if (!target) return;
-      const note = prompt('Note (optional):') || '';
-      const fullNote = `to:${target} ${note}`.trim();
-      logAction(instance.instance_id, task.task_id, 'transferred', fullNote);
-      renderDashboard();
-    });
-    container.appendChild(tBtn);
-  }
+// Transfer: inline select instead of prompt
+if (instance.status !== 'done') {
+  const select = document.createElement('select');
+  select.className = 'transfer-select';
+  select.innerHTML = '<option value="">Transfer to…</option>';
+
+  const db = getDB();
+  const usersRes = db.exec(`SELECT DISTINCT user FROM attendance UNION SELECT DISTINCT user FROM leave`);
+  const users = new Set();
+  if (usersRes.length > 0) usersRes[0].values.forEach(v => users.add(v[0]));
+  // Also add current user's assigned
+  if (task.assigned_user) users.add(task.assigned_user);
+
+  [...users].sort().forEach(u => {
+    const opt = document.createElement('option');
+    opt.value = u;
+    opt.textContent = u;
+    select.appendChild(opt);
+  });
+
+  select.addEventListener('change', async () => {
+    if (!select.value) return;
+    const note = `to:${select.value}`;
+    await logAction(instance.instance_id, task.task_id, 'transferred', note);
+    select.value = '';
+    renderDashboard();
+  });
+
+  container.appendChild(select);
+}   
 
   return container;
 }
@@ -129,6 +144,14 @@ export function renderTaskCard(instance, task) {
     ? `<span class="doer">→ ${doer}</span>`
     : '';
 
+
+  // After the doer label, add transfer label
+const transferTarget = getTransferredTo(instance.instance_id);
+const transferLabel = transferTarget ? `<span class="transfer-label">→ ${transferTarget}</span>` : '';
+header.innerHTML = `<strong>${task.name}</strong> <span class="muted">(${assigned})</span> ${doerLabel} ${transferLabel}`;   
+
+
+  
   const header = document.createElement('div');
   header.className = 'task-card-header';
   header.innerHTML = `<strong>${task.name}</strong> <span class="muted">(${assigned})</span> ${doerLabel}`;
@@ -151,4 +174,18 @@ export function renderTaskCard(instance, task) {
   card.appendChild(renderActionButtons(instance, task));
 
   return card;
+}   
+
+
+
+export function getTransferredTo(instanceId) {
+  const db = getDB();
+  const res = db.exec(
+    `SELECT note FROM events WHERE instance_id = ? AND action = 'transferred' ORDER BY ts DESC LIMIT 1`,
+    [instanceId]
+  );
+  if (res.length === 0 || res[0].values.length === 0) return null;
+  const note = res[0].values[0][0] || '';
+  const match = note.match(/to:(\w+)/);
+  return match ? match[1] : null;
 }   
