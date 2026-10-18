@@ -44,6 +44,7 @@
     </header>
     <div class="sec-body">
       <div id="presence-content"></div>
+       <button class="btn-leave" onclick="showLeaveModal()">Request Leave</button>
     </div>
   </section>
 
@@ -102,8 +103,59 @@
   </section>
 </div>   
   <div id="page-task-create" class="page" style="display:none">
-    <h3>Task Creation</h3>
-  </div>
+  <h3>Create Task</h3>
+  <form id="task-form">
+    <label>Name</label>
+    <input id="tc-name" required placeholder="e.g. Water garden" />
+
+    <label>Type</label>
+    <select id="tc-type" required>
+      <option value="calendar">Calendar-anchored</option>
+      <option value="sequence">Sequence-based</option>
+      <option value="stock">Stock-threshold</option>
+      <option value="standalone">Standalone</option>
+    </select>
+
+    <div id="tc-recurrence-group">
+      <label>Recurrence</label>
+      <input id="tc-recurrence" placeholder="monthly / quarterly / annual / 2d / weekly:mon,wed" />
+    </div>
+
+    <div id="tc-threshold-group" style="display:none">
+      <label>Threshold (due when stock ≤ this)</label>
+      <input id="tc-threshold" type="number" min="0" />
+    </div>
+
+    <div id="tc-initial-stock-group" style="display:none">
+      <label>Initial stock</label>
+      <input id="tc-initial-stock" type="number" min="0" value="0" />
+    </div>
+
+    <div id="tc-deadline-group" style="display:none">
+      <label>Deadline (optional)</label>
+      <input id="tc-deadline" type="date" />
+    </div>
+
+    <label>Assigned to</label>
+    <input id="tc-assigned" placeholder="username" />
+
+    <label>Exempt days (comma-separated)</label>
+    <input id="tc-exempt" placeholder="sunday, holidays" />
+
+    <label>Grace (minutes)</label>
+    <input id="tc-grace" type="number" min="0" value="0" />
+
+    <label class="checkbox-label">
+      <input type="checkbox" id="tc-show-all" checked /> Show all instances on dashboard
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox" id="tc-track-time" /> Track duration
+    </label>
+
+    <button type="submit">Create Task</button>
+  </form>
+</div>   
   <div id="page-task-detail" class="page" style="display:none">
     <h3>Task Detail</h3>
   </div>
