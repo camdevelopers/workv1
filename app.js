@@ -27,7 +27,8 @@ let currentUser = null;
 let pollTimer = null;
 
 // --- Router ---
-const pages = ['dashboard', 'task-create', 'task-detail', 'maintenance'];
+//const pages = ['dashboard', 'task-create', 'task-detail', 'maintenance'];
+const pages = ['dashboard', 'task-create', 'task-detail', 'maintenance', 'expenses'];   
 
 export function showPage(name) {
   pages.forEach(p => {
