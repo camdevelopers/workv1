@@ -148,6 +148,26 @@ nav button { padding: 0.4rem 0.8rem; cursor: pointer; }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Signout */
 .btn-signout {
   padding: 0.3rem 0.7rem; font-size: 0.8rem;
@@ -166,3 +186,59 @@ nav button { padding: 0.4rem 0.8rem; cursor: pointer; }
 
 /* Transfer label on card */
 .transfer-label { color: #9d174d; font-size: 0.85rem; margin-left: 0.4rem; font-weight: 600; }   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Task list */
+.task-list { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+.task-list-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 0.9rem; border-bottom: 1px solid #f3f4f6;
+}
+.task-list-row:last-child { border-bottom: none; }
+.task-list-row.retired { opacity: 0.5; }
+.task-list-info { display: flex; align-items: center; gap: 0.5rem; }
+.task-list-actions button {
+  padding: 0.25rem 0.6rem; font-size: 0.8rem;
+  border: 1px solid #d1d5db; border-radius: 4px; cursor: pointer; background: #fff;
+}
+.task-list-actions button:hover { background: #fee2e2; }
+
+/* Type badges */
+.badge-type-calendar { background: #dbeafe; color: #1e40af; }
+.badge-type-sequence { background: #d1fae5; color: #065f46; }
+.badge-type-stock { background: #fef3c7; color: #92400e; }
+.badge-type-standalone { background: #e5e7eb; color: #374151; }
+
+/* Type-aware form groups */
+.type-group {
+  margin-top: 0.75rem; padding: 0.75rem; background: #f9fafb;
+  border-radius: 6px; border: 1px solid #e5e7eb;
+}
+.sub-group { margin-top: 0.5rem; padding-left: 0.5rem; }
+.day-checks { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.3rem; }
+.day-checks .chk { display: flex; align-items: center; gap: 0.2rem; font-size: 0.85rem; }
+.day-checks .chk input { width: auto; }
+
+/* Completed / missed card styling */
+.card-missed { border-left: 3px solid #dc2626; }
+.card-completed { border-left: 3px solid #059669; opacity: 0.8; }   
