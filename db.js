@@ -117,6 +117,10 @@ export async function initDB() {
         key TEXT PRIMARY KEY,
         value TEXT
       );
+      CREATE TABLE IF NOT EXISTS users (
+      username TEXT PRIMARY KEY,
+      role TEXT DEFAULT 'employee'
+    );   
     `);
     await saveDB();
   }
