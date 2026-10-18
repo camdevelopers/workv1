@@ -6,7 +6,10 @@ import { getUpcomingInstances, isMissed } from './instances.js';
 
 //import { renderTaskCard, getUpcomingInstances } from './instances.js';
 import { renderTaskCard as renderCard } from './actions.js';
-import { renderDashboard } from './dashboard.js';   
+import { renderDashboard } from './dashboard.js';
+
+import { initTaskCreatePage } from './task-create.js';
+import { showLeaveModal } from './leave.js';
 
  
 
@@ -65,8 +68,10 @@ async function startApp() {
   await doPushPending();
   startPolling();
   initNav();
+  initTaskCreatePage();
  // restorePrefs();   TODO
-  renderDashboard();   
+  renderDashboard();
+
 }
 
 // --- Pull: check for new commits, fetch new CSVs, apply ---
@@ -245,7 +250,12 @@ function renderUpcoming() {
     }
   }
 }*/  
-
+export function showPage(name) {
+  pages.forEach(p => {
+    document.getElementById(`page-${p}`).style.display = p === name ? '' : 'none';
+  });
+  history.pushState(name, '');
+}   
 
 
 window.getDB = getDB;
