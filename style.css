@@ -97,3 +97,48 @@ nav button { padding: 0.4rem 0.8rem; cursor: pointer; }
 .badge-retired { background: #f3f4f6; color: #6b7280; }
 .small { font-size: 0.8rem; }
 .muted { color: #6b7280; }   
+
+
+
+
+
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+.modal {
+  background: #fff; border-radius: 8px; padding: 1.5rem;
+  width: 90%; max-width: 360px;
+}
+.modal h3 { margin-bottom: 1rem; }
+.modal label { display: block; font-size: 0.85rem; color: #374151; margin-top: 0.6rem; }
+.modal input, .modal select {
+  width: 100%; padding: 0.4rem; margin-top: 0.2rem;
+  border: 1px solid #d1d5db; border-radius: 4px;
+}
+.modal-btns { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: flex-end; }
+.btn-cancel { padding: 0.4rem 0.8rem; border: 1px solid #d1d5db; background: #fff; border-radius: 4px; cursor: pointer; }
+.btn-confirm { padding: 0.4rem 0.8rem; background: #2563eb; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+
+/* Task form */
+#task-form label { display: block; font-size: 0.85rem; color: #374151; margin-top: 0.75rem; }
+#task-form input, #task-form select {
+  width: 100%; padding: 0.5rem; margin-top: 0.2rem;
+  border: 1px solid #d1d5db; border-radius: 4px;
+}
+#task-form button[type=submit] {
+  margin-top: 1rem; padding: 0.5rem 1.2rem;
+  background: #059669; color: #fff; border: none; border-radius: 4px;
+  cursor: pointer; font-weight: 600;
+}
+.checkbox-label { display: flex !important; align-items: center; gap: 0.4rem; margin-top: 0.6rem !important; }
+.checkbox-label input { width: auto !important; }
+
+/* Leave button */
+.btn-leave {
+  margin-top: 0.75rem; padding: 0.4rem 0.8rem;
+  background: #f59e0b; color: #fff; border: none; border-radius: 4px;
+  cursor: pointer; font-size: 0.85rem;
+}   
