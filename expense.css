@@ -1,0 +1,79 @@
+/* All scoped to #page-expenses to avoid conflicts */
+#page-expenses { padding: 0; }
+
+#exp-offlineBanner {
+  display: none; position: sticky; top: 0; left: 0; right: 0;
+  background: #f57c00; color: #fff; padding: 8px 16px;
+  font-size: 0.8rem; font-weight: 600; text-align: center; z-index: 9998;
+}
+#page-expenses.exp-offline { padding-top: 36px; }
+
+.exp-user-bar {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  font-size: 0.9rem; flex-wrap: wrap;
+}
+.exp-user-bar span { font-weight: 600; }
+.exp-user-bar select {
+  padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc;
+  font-size: 0.85rem; background: #fff; cursor: pointer;
+}
+
+.exp-table {
+  width: 100%; border-collapse: collapse; background: #fff;
+  border-radius: 8px; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.82rem;
+}
+.exp-table th, .exp-table td {
+  padding: 10px 8px; text-align: left; border-bottom: 1px solid #eee;
+}
+.exp-table th { background: #1a1a2e; color: #fff; font-weight: 600; }
+.exp-table tr:last-child td { border-bottom: none; }
+.exp-table tr.editing td { background: #fffde7; }
+.exp-table tr.bf-row td { background: #f3e5f5; font-style: italic; }
+
+.val-neg { color: #e53935; }
+.val-pos { color: #43a047; }
+.val-zero { color: #757575; }
+
+.exp-balance-total {
+  margin-top: 12px; font-size: 1rem; font-weight: 600;
+  text-align: right; padding: 8px;
+}
+
+.exp-form {
+  margin-top: 16px; background: #fff; border-radius: 8px;
+  padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.exp-form h2 { font-size: 1rem; margin-bottom: 12px; }
+.exp-form-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 10px;
+}
+.exp-form-row.full { grid-template-columns: 1fr; }
+.exp-form label { font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 4px; }
+.exp-form input, .exp-form select {
+  width: 100%; padding: 8px; border: 1px solid #ddd;
+  border-radius: 4px; font-size: 0.9rem;
+}
+.exp-btn-add {
+  width: 100%; padding: 10px; background: #1a1a2e; color: #fff;
+  border: none; border-radius: 6px; font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; margin-top: 4px;
+}
+.exp-btn-cancel {
+  width: 100%; padding: 10px; background: #777; color: #fff;
+  border: none; border-radius: 6px; font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; margin-top: 8px;
+}
+
+.row-actions { white-space: nowrap; }
+.row-actions button {
+  padding: 3px 6px; margin: 1px; border: none;
+  border-radius: 4px; cursor: pointer; font-size: 0.75rem;
+}
+.btn-edit { background: #e3f2fd; color: #1565c0; }
+.btn-del { background: #ffebee; color: #c62828; }
+.btn-edit:hover { background: #bbdefb; }
+.btn-del:hover { background: #ffcdd2; }
+
+.file-link { font-size: 0.75rem; color: #1565c0; text-decoration: none; }   
