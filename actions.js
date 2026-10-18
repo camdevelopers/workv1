@@ -137,6 +137,13 @@ export function renderTaskCard(instance, task) {
   const card = document.createElement('div');
   card.className = 'task-card';
 
+
+    const header = document.createElement('div');
+  header.className = 'task-card-header';
+  header.innerHTML = `<strong>${task.name}</strong> <span class="muted">(${assigned})</span> ${doerLabel}`;
+  card.appendChild(header);
+
+  
   // Header: name + assigned + doer
   const doer = getDoer(instance.instance_id);
   const assigned = task.assigned_user;
@@ -152,10 +159,7 @@ header.innerHTML = `<strong>${task.name}</strong> <span class="muted">(${assigne
 
 
   
-  const header = document.createElement('div');
-  header.className = 'task-card-header';
-  header.innerHTML = `<strong>${task.name}</strong> <span class="muted">(${assigned})</span> ${doerLabel}`;
-  card.appendChild(header);
+
 
   // Due date
   const due = document.createElement('div');
