@@ -250,12 +250,12 @@ function renderUpcoming() {
     }
   }
 }*/  
-export function showPage(name) {
+/*export function showPage_DUPLICATE(name) {
   pages.forEach(p => {
     document.getElementById(`page-${p}`).style.display = p === name ? '' : 'none';
   });
   history.pushState(name, '');
-}   
+} */  
 
 
 window.getDB = getDB;
