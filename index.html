@@ -19,11 +19,12 @@
 
 <!-- APP -->
 <div id="app" style="display:none">
-  <header>
-    <span id="sync-status">⏳ Syncing…</span>
-    <button id="refresh-btn">⟳</button>
-    <span id="user-label"></span>
-  </header>
+<header>
+  <span id="sync-status">⏳ Syncing…</span>
+  <button id="refresh-btn">⟳</button>
+  <span id="user-label"></span>
+  <button id="signout-btn" class="btn-signout">Sign Out</button>
+</header>   
 
   <!-- Pages (toggled by router) -->
 <div id="page-dashboard" class="page">
@@ -61,13 +62,24 @@
   <!-- Section 4: Upcoming (today + 7d) -->
   <section id="sec-upcoming" class="sec open">
     <header class="sec-header" onclick="toggleSec(this)">
-      <span>📅 Upcoming</span><span class="chevron">▾</span>
+      <span>📋 Current Tasks</span><span class="chevron">▾</span>
     </header>
     <div class="sec-body">
       <div id="upcoming-content"></div>
     </div>
   </section>
 
+<!-- Section 5: Completed -->
+<section id="sec-completed" class="sec">
+  <header class="sec-header" onclick="toggleSec(this)">
+    <span>✅ Completed</span><span class="chevron">▸</span>
+  </header>
+  <div class="sec-body" style="display:none">
+    <div id="completed-content"></div>
+  </div>
+</section>   
+
+  
   <!-- Section 5: Recurring (beyond 7d) -->
   <section id="sec-recurring" class="sec">
     <header class="sec-header" onclick="toggleSec(this)">
