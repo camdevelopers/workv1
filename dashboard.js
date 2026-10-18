@@ -1,8 +1,9 @@
 import { getDB, saveDB } from './db.js';
 import { getNextInstance, getLastCompleted, isMissed } from './instances.js';
 import { renderTaskCard, getDoer, getLatestStatus, getTransferredTo } from './actions.js';
-import { renderStockBar } from './stock-display.js';
+//import { renderStockBar } from './stock-display.js';
 import { renderDuration, renderLeaveBadge } from './polish.js';
+import { getStock, renderStockBar } from './stock-display.js';   
 
 // --- Toggle collapse ---
 window.toggleSec = function(headerEl) {
@@ -144,6 +145,26 @@ function renderCurrentTasks(tasks) {
   let count = 0;
 
   for (const task of tasks) {
+    // Stock tasks: always show card
+    if (task.type === 'stock') {
+      const card = document.createElement('div');
+      card.className = 'task-card';
+
+      const stock = getStock(task.task_id);
+      const threshold = parseInt((task.recurrence || '').replace('threshold:', '')) || 0;
+      if (stock > threshold) card.classList.add('card-inactive');
+
+      const header = document.createElement('div');
+      header.className = 'task-card-header';
+      header.innerHTML = `<strong>${task.name}</strong> <span class="muted">(${task.assigned_user || 'unassigned'})</span>`;
+      card.appendChild(header);
+      card.appendChild(renderStockBar(task));
+      container.appendChild(card);
+      count++;
+      continue;
+    }
+
+    // All other types: show next pending instance
     const inst = getNextInstance(task);
     if (!inst) continue;
     if (isMissed(inst, task)) continue; // shown in Missed section
@@ -153,9 +174,9 @@ function renderCurrentTasks(tasks) {
     container.appendChild(card);
     count++;
   }
-  if (count === 0) container.innerHTML = '<p class="muted">Nothing to do right now.</p>';
-}
 
+  if (count === 0) container.innerHTML = '<p class="muted">Nothing to do right now.</p>';
+}   
 // --- Section 5: Completed (one card per task, last done) ---
 function renderCompleted(tasks) {
   const container = document.getElementById('completed-content');
