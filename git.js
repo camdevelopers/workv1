@@ -56,3 +56,13 @@ export async function pushFile(path, content, message) {
   }
   return res.json();
 }   
+
+
+
+export async function listDir(path) {
+  const res = await fetch(`${API}/contents/${path}?ref=HEAD`, { headers: authHeaders() });
+  if (res.status === 404) return [];
+  if (!res.ok) throw new Error(`List ${path} failed: ${res.status}`);
+  const files = await res.json();
+  return files.filter(f => f.name.endsWith('.csv')).map(f => f.name);
+}   
