@@ -114,52 +114,84 @@
     </div>
   </section>
 </div>   
-  <div id="page-task-create" class="page" style="display:none">
-  <h3>Create Task</h3>
+<div id="page-task-create" class="page" style="display:none">
+  <h3>Tasks</h3>
+
+  <!-- Task List -->
+  <div id="task-list" class="task-list"></div>
+
+  <!-- Create Form -->
+  <h4 style="margin-top:1.5rem">Create New Task</h4>
   <form id="task-form">
     <label>Name</label>
     <input id="tc-name" required placeholder="e.g. Water garden" />
 
     <label>Type</label>
     <select id="tc-type" required>
-      <option value="calendar">Calendar-anchored</option>
-      <option value="sequence">Sequence-based</option>
-      <option value="stock">Stock-threshold</option>
-      <option value="standalone">Standalone</option>
+      <option value="calendar">Calendar-anchored (fixed schedule)</option>
+      <option value="sequence">Sequence-based (every N days from last done)</option>
+      <option value="stock">Stock-threshold (due when stock runs low)</option>
+      <option value="standalone">Standalone (one-off)</option>
     </select>
 
-    <div id="tc-recurrence-group">
-      <label>Recurrence</label>
-      <input id="tc-recurrence" placeholder="monthly / quarterly / annual / 2d / weekly:mon,wed" />
+    <!-- Calendar sub-fields -->
+    <div id="tc-cal-group" class="type-group">
+      <label>Frequency</label>
+      <select id="tc-cal-freq">
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly (specific days)</option>
+        <option value="monthly">Monthly (specific day)</option>
+        <option value="quarterly">Quarterly</option>
+        <option value="annual">Annual</option>
+      </select>
+
+      <div id="tc-cal-days-group" class="sub-group">
+        <label>On which days?</label>
+        <div class="day-checks">
+          <label class="chk"><input type="checkbox" id="tc-day-mon" checked /> Mon</label>
+          <label class="chk"><input type="checkbox" id="tc-day-tue" checked /> Tue</label>
+          <label class="chk"><input type="checkbox" id="tc-day-wed" checked /> Wed</label>
+          <label class="chk"><input type="checkbox" id="tc-day-thu" checked /> Thu</label>
+          <label class="chk"><input type="checkbox" id="tc-day-fri" checked /> Fri</label>
+          <label class="chk"><input type="checkbox" id="tc-day-sat" /> Sat</label>
+          <label class="chk"><input type="checkbox" id="tc-day-sun" /> Sun</label>
+        </div>
+      </div>
+
+      <div id="tc-cal-day-group" class="sub-group">
+        <label>On which day of month?</label>
+        <input id="tc-cal-day" type="number" min="1" max="31" value="1" placeholder="1" />
+      </div>
     </div>
 
-    <div id="tc-threshold-group" style="display:none">
-      <label>Threshold (due when stock ≤ this)</label>
-      <input id="tc-threshold" type="number" min="0" />
+    <!-- Sequence sub-fields -->
+    <div id="tc-seq-group" class="type-group" style="display:none">
+      <label>Every ___ days (from last completion)</label>
+      <input id="tc-seq-days" type="number" min="1" value="2" />
     </div>
 
-    <div id="tc-initial-stock-group" style="display:none">
+    <!-- Stock sub-fields -->
+    <div id="tc-stock-group" class="type-group" style="display:none">
+      <label>Due when stock ≤ ___</label>
+      <input id="tc-stock-threshold" type="number" min="0" value="5" />
       <label>Initial stock</label>
-      <input id="tc-initial-stock" type="number" min="0" value="0" />
+      <input id="tc-stock-initial" type="number" min="0" value="0" />
     </div>
 
-    <div id="tc-deadline-group" style="display:none">
+    <!-- Standalone sub-fields -->
+    <div id="tc-standalone-group" class="type-group" style="display:none">
       <label>Deadline (optional)</label>
-      <input id="tc-deadline" type="date" />
+      <input id="tc-standalone-deadline" type="date" />
     </div>
 
     <label>Assigned to</label>
-    <input id="tc-assigned" placeholder="username" />
+    <select id="tc-assigned"></select>
 
     <label>Exempt days (comma-separated)</label>
     <input id="tc-exempt" placeholder="sunday, holidays" />
 
     <label>Grace (minutes)</label>
     <input id="tc-grace" type="number" min="0" value="0" />
-
-    <label class="checkbox-label">
-      <input type="checkbox" id="tc-show-all" checked /> Show all instances on dashboard
-    </label>
 
     <label class="checkbox-label">
       <input type="checkbox" id="tc-track-time" /> Track duration
