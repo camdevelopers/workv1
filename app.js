@@ -1,5 +1,5 @@
 import { initDB, getDB, saveDB, getUserIndex, setUserIndex, getLastSHA, setLastSHA, getPending, setPending, applyEventRow } from './db.js';
-import { getLatestSHA, listChanges, fetchFileContent, pushFile } from './git.js';
+//import { getLatestSHA, listChanges, fetchFileContent, pushFile } from './git.js';
 import { setSyncStatus, setPendingCount } from './ui.js';
 import { getUpcomingInstances, isMissed } from './instances.js';
 import { getLatestSHA, listChanges, fetchFileContent, pushFile, listDir } from './git.js';   
